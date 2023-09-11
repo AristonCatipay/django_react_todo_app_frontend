@@ -27,9 +27,35 @@ class App extends Component{
   constructor(props){
     super(props);
     this.state = {
+      modal: false, // Don't open the modal always after you open the application.
       viewCompleted: false,
       taskList: tasks,
+      activeItem: {
+        title: "",
+        description: "",
+        completed: false,
+      }, 
+      taskList: tasks,
     };
+  }
+
+  // Create the toggle property.
+  toggle = () => {
+    this.setState({modal: !this.state.modal});
+  }
+  handleSubmit = item => {
+    this.toggle();
+    alert('Saved!' + JSON.stringify(item));
+  }
+  handleDelete = item => {
+    alert('Deleted!' + JSON.stringify(item));
+  }
+  createItem = () => {
+    const item = {title: "", modal: !this.state.modal};
+    this.setState({activeItem: item, modal: !this.state.modal});
+  }
+  editItem = item => {
+    this.setState({activeItem: item, modal: !this.state.modal});
   }
 
   displayCompleted = status => {
@@ -80,8 +106,8 @@ class App extends Component{
 
   render(){
     return (
-      <main className='context'>
-        <h1 className='text-black text-uppercase text-center my-4'>
+      <main className='content p-3 mb-2 bg-info'>
+        <h1 className='text-white text-uppercase text-center my-4'>
             Task Manager
         </h1>
         <div className='row'>
@@ -97,6 +123,7 @@ class App extends Component{
                 </div>
             </div>
         </div>
+        <footer className='my-5 mb-2 bg-info text-white text-center'>Copyright 2023 &copy; </footer>
       </main>
     )
   }
