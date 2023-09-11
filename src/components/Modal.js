@@ -38,7 +38,7 @@ class CustomModal extends Component{
             <Modal isOpen={true} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Task Item</ModalHeader>
                 <ModalBody>
-                    <form>
+                    <Form>
                         {/* 1 Title Label */}
                         <FormGroup>
                             <Label for="title">Title</Label>
@@ -52,17 +52,18 @@ class CustomModal extends Component{
                         </FormGroup>
 
                         {/* 3 Completed Label */}
-                        <FormGroup>
-                            <Label for="completed">Completed</Label>
-                            <Input type="checkbox" name="completed" value={this.state.activeItem.completed} onChange={this.handleChange}></Input>
+                        <FormGroup check>
+                            <Label for="completed">
+                            <Input type="checkbox" name="completed" checked={this.state.activeItem.completed} onChange={this.handleChange}/>
+                            Completed</Label>
                         </FormGroup>
-                    </form>
+                    </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <button color="success" onClick={() => onSave(this.state.activeItem)}>Save</button>
+                    <Button color="success" onClick={() => onSave(this.state.activeItem)}>Save</Button>
                 </ModalFooter>
             </Modal>
-        )
+        );
     }
 }
 

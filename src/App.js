@@ -1,27 +1,28 @@
 import React, {Component} from 'react'
 import './App.css';
 import Modal from './components/Modal'
+import axios from 'axios';
 
-const tasks = [
-  {
-    id: 1,
-    title: "Breakfast",
-    description: "Preparing the meal for breakfast.",
-    completed: false
-  }, 
-  {
-    id: 2,
-    title: "Lunch",
-    description: "Preparing the meal for lunch.",
-    completed: false
-  },
-  {
-    id: 3,
-    title: "Dinner",
-    description: "Preparing the meal for dinner.",
-    completed: true
-  },
-]
+// const tasks = [
+//   {
+//     id: 1,
+//     title: "Breakfast",
+//     description: "Preparing the meal for breakfast.",
+//     completed: false
+//   }, 
+//   {
+//     id: 2,
+//     title: "Lunch",
+//     description: "Preparing the meal for lunch.",
+//     completed: false
+//   },
+//   {
+//     id: 3,
+//     title: "Dinner",
+//     description: "Preparing the meal for dinner.",
+//     completed: true
+//   },
+// ]
 
 class App extends Component{
   constructor(props){
@@ -29,34 +30,56 @@ class App extends Component{
     this.state = {
       modal: false, // Don't open the modal always after you open the application.
       viewCompleted: false,
-      taskList: tasks,
+      //taskList: tasks, This is commented to use the data in the API.
       activeItem: {
         title: "",
         description: "",
         completed: false,
       }, 
-      taskList: tasks,
+      // taskList: tasks, # This is commented to use the data in the API.
+      todoList : [],
     };
   }
+
+  componentDidMount() {
+    this.refreshList();
+  };
+
+  refreshList = () => {
+    axios
+    .get('http://localhost:8000/api/tasks')
+    .then(res => this.setState({todoList : res.data}))
+    .catch(err => console.log(err)) 
+  };
 
   // Create the toggle property.
   toggle = () => {
     this.setState({modal: !this.state.modal});
-  }
+  };
   handleSubmit = item => {
     this.toggle();
-    alert('Saved!' + JSON.stringify(item));
-  }
+    // alert('Saved!' + JSON.stringify(item)); 
+    // The code above is used to check if the frontend is working properly.
+    if (item.id){
+      // Editing old post
+      axios.put(`http://localhost:8000/api/tasks/${item.id}/`, item).then(res => this.refreshList());
+      return;
+    }
+    // Creating new post
+    axios.post('http://localhost:8000/api/tasks/', item).then(res => this.refreshList());
+  };
   handleDelete = item => {
-    alert('Deleted!' + JSON.stringify(item));
-  }
+    // alert('Deleted!' + JSON.stringify(item));
+    // The code above is used to check if the frontend is working properly.
+    axios.delete(`http://localhost:8000/api/tasks/${item.id}/`).then(res => this.refreshList())
+  };
   createItem = () => {
-    const item = {title: "", modal: !this.state.modal};
+    const item = {title: "", description: "", completed: false};
     this.setState({activeItem: item, modal: !this.state.modal});
-  }
+  };
   editItem = item => {
     this.setState({activeItem: item, modal: !this.state.modal});
-  }
+  };
 
   displayCompleted = status => {
     if (status){
@@ -85,8 +108,8 @@ class App extends Component{
   // Rendering items in the list. Completed or incomplete.
   renderItems = () => {
     const{viewCompleted} = this.state;
-    const newItems = this.state.taskList.filter(
-      item => item.completed == viewCompleted
+    const newItems = this.state.todoList.filter(
+      item => item.completed === viewCompleted
     );
     // Return new items and map them.
     return newItems.map(item =>(
@@ -96,8 +119,8 @@ class App extends Component{
           {item.title}
         </span>
         <span>
-          <button className='btn btn-info me-2'>Edit</button>
-          <button className='btn btn-danger me-2'>Delete</button>
+        <button className='btn btn-info me-2' onClick={() => this.editItem(item)}>Edit</button>
+        <button className='btn btn-danger me-2' onClick={() => this.handleDelete(item)}>Delete</button>
         </span>
       </li>
     ))
@@ -114,7 +137,7 @@ class App extends Component{
             <div className='col-md-6 col-sma-10 mx-auto p-0'>
                 <div className='card p-3'>
                     <div>
-                      <button className='btn btn-warning'>Add task</button>
+                    <button className='btn btn-warning' onClick={this.createItem}>Add task</button>
                     </div>
                     {this.renderTabList()}
                     <ul className='list-group list-group-flush'>
