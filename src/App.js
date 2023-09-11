@@ -64,13 +64,13 @@ class App extends Component{
     // Return new items and map them.
     return newItems.map(item =>(
       <li key={item.id} className='list-group-item d-flex justify-content-between align-items-center'>
-        <span className={`todo-title mr-2 ${this.state.viewCompleted ? "completed-todo": 
+        <span className={`todo-title me-2 ${this.state.viewCompleted ? "completed-todo": 
       ""}`} title={item.title}>
           {item.title}
         </span>
         <span>
-          <button className='btn btn-info mr-2'>Edit</button>
-          <button className='btn btn-danger mr-2'>Delete</button>
+          <button className='btn btn-info me-2'>Edit</button>
+          <button className='btn btn-danger me-2'>Delete</button>
         </span>
       </li>
     ))
