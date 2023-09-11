@@ -124,6 +124,11 @@ class App extends Component{
             </div>
         </div>
         <footer className='my-3 mb-2 bg-info text-white text-center'>Copyright 2023 &copy; All rights reserved.</footer>
+        {this.state.modal ? (
+          <Modal activeItem = {this.state.activeItem} toggle={this.toggle} onSave={this.handleSubmit}>
+
+          </Modal>
+        ): null}
       </main>
     )
   }
