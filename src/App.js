@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import './App.css';
+import Modal from './components/Modal'
 
 const tasks = [
   {
@@ -33,9 +34,9 @@ class App extends Component{
 
   displayCompleted = status => {
     if (status){
-      return this.setStatus({viewCompleted:true})
+      return this.setState({viewCompleted:true})
     }
-    return this.setStatus({viewCompleted:false})
+    return this.setState({viewCompleted:false})
   }
 
   renderTabList = () => {
