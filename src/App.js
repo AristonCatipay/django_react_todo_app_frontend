@@ -123,7 +123,7 @@ class App extends Component{
                 </div>
             </div>
         </div>
-        <footer className='my-5 mb-2 bg-info text-white text-center'>Copyright 2023 &copy; </footer>
+        <footer className='my-3 mb-2 bg-info text-white text-center'>Copyright 2023 &copy; All rights reserved.</footer>
       </main>
     )
   }
